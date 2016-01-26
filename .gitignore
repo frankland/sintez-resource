@@ -1,0 +1,8 @@
+.DS_Store
+/.git
+/.idea
+/npm-debug.log
+/node_modules
+/resource.js
+/resource-mutator.js
+/index.js
