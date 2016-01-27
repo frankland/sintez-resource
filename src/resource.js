@@ -6,11 +6,14 @@ import isArray from 'lodash/lang/isArray';
 import isString from 'lodash/lang/isString';
 import uniq from 'lodash/array/uniq';
 
-import isModule from 'is-node-module-exists';
+import magic from 'magic-require';
 
 import { posix as path} from 'path';
 
 const { join } = path;
+
+const isModule = path => magic.isExists(path) && path[0] != '.' && path[0] != '/';
+
 
 const joinUrl = (...agrs) => agrs.join('/')
   .replace(/[\/]+/g, '/')
@@ -206,19 +209,19 @@ export default class Resource {
       resourceSrc = src.map(path => {
         let normalized = null;
 
-        if (isModule(path)) {
+        if (isModule(path) && path[0] != '.' && path[0] != '/') {
           normalized = path;
         } else {
-          normalized = join(applicationSrc, path)
+          normalized = `./${join(applicationSrc, path)}`;
         }
 
         return normalized;
       });
     } else {
-      if (isModule(src)) {
+      if (isModule(src) && path[0] != '.' && path[0] != '/') {
         resourceSrc = src;
       } else {
-        resourceSrc = join(applicationSrc, src);
+        resourceSrc = `./${join(applicationSrc, src)}`;
       }
     }
 
@@ -252,7 +255,7 @@ export default class Resource {
     if (normalized.originalArraySource) {
       relativeSrc = normalized.src;
     } else {
-      relativeSrc = normalized.src[0];``
+      relativeSrc = normalized.src[0];
     }
 
     return relativeSrc;

@@ -24,7 +24,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "glob": "^6.0.4",
-    "is-node-module-exists": "0.0.3",
-    "lodash": "^3.9.3"
+    "lodash": "^3.9.3",
+    "magic-require": "^0.1.1"
   }
 }
