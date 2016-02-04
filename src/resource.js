@@ -43,7 +43,8 @@ const eachPath = (src, cb) => {
         collected = [path];
       }
     } else {
-      collected = collected.map((script) => './' + script);
+      collected = collected.map((script) => script);
+      //collected = collected.map((script) => './' + script);
     }
 
     cb(collected, path);
@@ -155,6 +156,7 @@ let _key = Symbol('key');
 
 let _applicationSrc = Symbol('application-src');
 let _applicationDest = Symbol('application-dest');
+let _baseUrl = Symbol('base-url');
 
 
 let problemsLogged = new Set();
@@ -162,8 +164,11 @@ let problemsLogged = new Set();
 export default class Resource {
   constructor(key, config, applicationConfig) {
     this[_key] = key;
+
     this[_applicationSrc] = applicationConfig.src;
     this[_applicationDest] = applicationConfig.dest;
+    this[_baseUrl] = applicationConfig.baseUrl || '/';
+
     this[_normalized] = normalize(key, config);
 
     let src = this.getSrc();
@@ -299,13 +304,13 @@ export default class Resource {
 
     let urls = null;
     if (destName) {
-      urls = joinUrl('/', relativeTarget, destName);
+      urls = joinUrl(this[_baseUrl], relativeTarget, destName);
     } else {
       let names = this.getName();
 
       urls = [];
       for (let name of names) {
-        let url = joinUrl('/', relativeTarget, name);
+        let url = joinUrl(this[_baseUrl], relativeTarget, name);
         urls.push(url);
       }
     }
