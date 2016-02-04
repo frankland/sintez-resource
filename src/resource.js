@@ -298,19 +298,19 @@ export default class Resource {
     return mask;
   }
 
-  getUrl() {
+  getUrl(baseUrl = this[_baseUrl]) {
     let relativeTarget = this.getRelativeTarget();
     let destName = this.getDestName();
 
     let urls = null;
     if (destName) {
-      urls = joinUrl(this[_baseUrl], relativeTarget, destName);
+      urls = joinUrl(baseUrl, relativeTarget, destName);
     } else {
       let names = this.getName();
 
       urls = [];
       for (let name of names) {
-        let url = joinUrl(this[_baseUrl], relativeTarget, name);
+        let url = joinUrl(baseUrl, relativeTarget, name);
         urls.push(url);
       }
     }
